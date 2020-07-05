@@ -52,3 +52,8 @@ def table_qty():
         return str(a), 200
     else:
         return str("No Tables Found"), 200
+
+@table_app.route('/get/all', methods=["GET"])
+def get_all_table():
+    data = list(table_coll.find({}, {"_id": False, "created_at": False, "updated_at": False}))
+    return json.dumps(data), 200

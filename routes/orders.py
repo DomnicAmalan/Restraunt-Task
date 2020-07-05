@@ -18,7 +18,19 @@ def change_order_status(order_id, status):
     order_coll.update({"order_id": order_id}, {"set": {"status": status}}, False)
     return Response(status=204)
 
+
+
 @order_app.route('/get/order/<status>', methods=["GET"])
 def ongoing_order(status):
-    data = list(order_coll.find({"status": status}))
+    data = list(order_coll.find({"status": status}, {"_id": False, "created_at": False, "updated_at": False}))
+    return json.dumps(data), 200
+
+@order_app.route('/get/order/count', methods=["GET"])
+def get_count_order():
+    data = order_coll.count()
+    return str(data), 200
+
+@order_app.route('/get/order/all', methods=["GET"])
+def ongoing_order(status):
+    data = list(order_coll.find({}, {"_id": False, "created_at": False, "updated_at": False}))
     return json.dumps(data), 200
