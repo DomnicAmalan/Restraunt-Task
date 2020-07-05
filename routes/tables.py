@@ -25,7 +25,7 @@ def edit_table(table_id):
     else:
         data = request.get_json()
         data.update({"updated_at": datetime.now()})
-        table_coll.update({"org_table_id": table_id}, {"$set" : data}, False)
+        table_coll.update({"org_table_id": table_id}, {"$set" : {"order_status":data["order_status"]}}, False)
         return Response(status=204)
 
 @table_app.route('/delete-table/<table_id>', methods=['DELETE'])
